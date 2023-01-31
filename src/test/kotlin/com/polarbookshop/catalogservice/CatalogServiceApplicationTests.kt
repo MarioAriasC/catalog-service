@@ -5,10 +5,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("integration")
 class CatalogServiceApplicationTests {
 
     @Autowired
@@ -17,7 +19,7 @@ class CatalogServiceApplicationTests {
     @Test
     fun `when get request with id then book returned`() {
         val bookIsbn = "1231231230"
-        val bookToCreate = Book(bookIsbn, "Title", "Author", 9.90)
+        val bookToCreate = Book(bookIsbn, "Title", "Author", 9.90, "Polarsophia")
         val expectedBook = webTestClient
             .post()
             .uri("/books")
@@ -40,7 +42,7 @@ class CatalogServiceApplicationTests {
 
     @Test
     fun `when post request then book created`() {
-        val expectedBook = Book("1231231231", "Title", "Author", 9.90)
+        val expectedBook = Book("1231231231", "Title", "Author", 9.90, "Polarsophia")
         webTestClient
             .post()
             .uri("/books")
@@ -56,7 +58,7 @@ class CatalogServiceApplicationTests {
     @Test
     fun `when put request then book updated`() {
         val bookIsbn = "1231231232"
-        val bookToCreate = Book(bookIsbn, "Title", "Author", 9.90)
+        val bookToCreate = Book(bookIsbn, "Title", "Author", 9.90, "Polarsophia")
         val createdBook = webTestClient
             .post()
             .uri("/books")
@@ -83,7 +85,7 @@ class CatalogServiceApplicationTests {
     @Test
     fun `when delete request then book deleted`() {
         val bookIsbn = "1231231233"
-        val bookToCreate = Book(bookIsbn, "Title", "Author", 9.90)
+        val bookToCreate = Book(bookIsbn, "Title", "Author", 9.90, "Polarsophia")
         with(webTestClient) {
             post()
                 .uri("/books")

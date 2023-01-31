@@ -19,7 +19,7 @@ class BookServiceTest {
     @Test
     fun `when book to create already exists then throws`() {
         val bookIsbn = "1234561232"
-        val bookToCreate = Book(bookIsbn, "Title", "Author", 9.90)
+        val bookToCreate = Book(bookIsbn, "Title", "Author", 9.90, "Polarsophia")
         `when`(repository.existsByIsbn(bookIsbn)).thenReturn(true)
         assertThatThrownBy { service.addBookToCatalog(bookToCreate) }
             .isInstanceOf(BookAlreadyExistsException::class.java)

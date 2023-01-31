@@ -13,7 +13,12 @@ import java.awt.desktop.AppReopenedEvent
 class BookDataLoader(private val repository: BookRepository) {
     @EventListener(ApplicationReadyEvent::class)
     fun loadBookTestData() {
-        repository.save(Book("1234567891", "Northern Lights", "Lyra Silverstar", 9.90))
-        repository.save(Book("1234567892", "Polar Journey", "Iorek Polarson", 12.90))
+        repository.deleteAll()
+        repository.saveAll(
+            listOf(
+                Book("1234567891", "Northern Lights", "Lyra Silverstar", 9.90, "Polarsophia"),
+                Book("1234567892", "Polar Journey", "Iorek Polarson", 12.90, "Polarsophia")
+            )
+        )
     }
 }

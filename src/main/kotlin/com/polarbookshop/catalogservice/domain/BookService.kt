@@ -19,7 +19,13 @@ class BookService(private val repository: BookRepository) {
     fun editBookDetails(isbn: String, book: Book): Book {
         val existingBook = repository.findByIsbn(isbn)
         return if (existingBook != null) {
-            repository.save(existingBook.copy(title = book.title, author = book.author, price = book.price))
+            repository.save(
+                existingBook.copy(
+                    title = book.title,
+                    author = book.author,
+                    price = book.price
+                )
+            )
         } else {
             addBookToCatalog(book)
         }
