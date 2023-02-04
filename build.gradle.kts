@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
@@ -13,7 +14,7 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 extra["springCloudVersion"] = "2022.0.1"
-extra["testcontainersVersion"] =  "1.17.3"
+extra["testcontainersVersion"] = "1.17.3"
 
 repositories {
     mavenCentral()
@@ -57,4 +58,17 @@ tasks.withType<Test> {
 
 tasks.withType<BootRun> {
     systemProperties("spring.profiles.active" to "testdata")
+}
+
+tasks.withType<BootBuildImage> {
+    imageName.set(project.name)
+    environment.set(mapOf("BP_JVM_VERSION" to "17.*"))
+    docker {
+        publishRegistry {
+            username.set(project.findProperty("registryUsername")?.toString() ?: "")
+            password.set(project.findProperty("registryToken")?.toString() ?: "")
+            url.set(project.findProperty("registryUrl")?.toString() ?: "")
+
+        }
+    }
 }
