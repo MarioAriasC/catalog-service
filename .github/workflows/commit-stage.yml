@@ -1,6 +1,11 @@
 name: Commit Stage
 on: push
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: marioariasc/catalog-service
+  VERSION: latest
+
 jobs:
   build:
     name: Build and Test
@@ -35,7 +40,7 @@ jobs:
           ./gradlew build
   package:
     name: Package and Publish
-    if: ${{ github.ref == 'refs/head/main'}}
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: [ build ]
     runs-on: ubuntu-22.04
     permissions:
@@ -52,11 +57,11 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Build container image
-        run: | 
+        run: |
           chmod +x gradlew
           ./gradlew bootBuildImage \
             --imageName ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
-      - name: OCI Image vulnerability scanning
+      - name: OCI image vulnerability scanning
         uses: anchore/scan-action@v3
         id: scan
         with:
